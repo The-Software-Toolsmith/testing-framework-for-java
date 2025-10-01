@@ -34,8 +34,16 @@ import java.util.List ;
  *
  * @version 1.0 2025-07-19
  *     <ul>
- *     <li>Initial implementation - extracted from framework's {@link Reflection}
- *     <li>rename {@code xxxCollect()} to {@code xxxDataset()} for consistency with other classes
+ *     <li>Initial implementation - extracted from framework's
+ *     {@link Reflection}
+ *     <li>add {@code xxxDataset()} equivalents of {@code xxxCollect()} to ease
+ *     transition to new names with other classes
+ *     </ul>
+ * @version 1.1 2025-09-29
+ *     <ul>
+ *     <li>restore {@code xxxCollection()} named methods as pass-throughs so
+ *     existing tests don't have to be modified immediately     IN_PROCESS
+ *     <li>undo reversing '==' and '!=' comparisons
  *     </ul>
  */
 public class ReflectBackingStores
@@ -49,8 +57,6 @@ public class ReflectBackingStores
 
     /**
      * prevent instantiation
-     *
-     * @since 1.0
      */
     private ReflectBackingStores()
         {
@@ -232,7 +238,7 @@ public class ReflectBackingStores
         final List<Object> contentsList = new LinkedList<>() ;
 
         // if no starting node, return the empty list
-        if ( null == startNode )
+        if ( startNode == null )
             {
             // ArrayList provides best space complexity and fastest positional retrieval
             return new ArrayList<>( contentsList ) ;
@@ -242,20 +248,20 @@ public class ReflectBackingStores
 
         // set up - handle omitted (null) arguments
 
-        final String dataFieldName = ( null != dataFieldNameArg )
+        final String dataFieldName = ( dataFieldNameArg != null )
             ? dataFieldNameArg
             : "data" ;
 
-        final String nextFieldName = ( null != nextFieldNameArg )
+        final String nextFieldName = ( nextFieldNameArg != null )
             ? nextFieldNameArg
             : "next" ;
 
 
-        final boolean circularChain = ( null == circularChainArg )
+        final boolean circularChain = ( circularChainArg == null )
             ? false
             : circularChainArg ;
 
-        final boolean skipNulls = ( null == skipNullsArg )
+        final boolean skipNulls = ( skipNullsArg == null )
             ? false
             : skipNullsArg ;
 
@@ -267,7 +273,7 @@ public class ReflectBackingStores
         Object currentNode = startNode ;
 
         // traverse the chain
-        while ( null != currentNode )
+        while ( currentNode != null )
             {
 
             // loop detection
@@ -289,7 +295,7 @@ public class ReflectBackingStores
                                                            dataFieldName ) ;
 
             // either have non-null contents or include null as valid data
-            if ( ( null != contentsItem ) || !skipNulls )
+            if ( ( contentsItem != null ) || !skipNulls )
                 {
                 contentsList.add( contentsItem ) ;
                 }
@@ -312,19 +318,18 @@ public class ReflectBackingStores
      * @param backingStoreFieldName
      *     field name of the collection's backing store
      *
-     * @return array of the contents of {@code collectionToCopy} or {@code null} if
-     *     {@code collectionToCopy} is {@code null}
+     * @return array of the contents of {@code collectionToCopy} or {@code null}
+     *     if {@code collectionToCopy} is {@code null}
      *
-     * @deprecated Use {@link #getContentsOfArrayBackedDataset(Object,String)} instead
+     * @deprecated Use {@link #getContentsOfArrayBackedDataset(Object,String)}
+     *     instead
      */
     @Deprecated( forRemoval = true, since = "1.0" )
-    public static Object[] getContentsOfArrayBackedCollection(
-                                                               final Object collectionToCopy,
+    public static Object[] getContentsOfArrayBackedCollection( final Object collectionToCopy,
                                                                final String backingStoreFieldName )
         {
 
-        return getContentsOfArrayBackedDataset( collectionToCopy,
-                                                backingStoreFieldName ) ;
+        return getContentsOfArrayBackedDataset( collectionToCopy, backingStoreFieldName ) ;
 
         }   // end getContentsOfArrayBackedCollection() pass-through
 
@@ -340,8 +345,7 @@ public class ReflectBackingStores
      * @return array of the contents of {@code collectionToCopy} or {@code null} if
      *     {@code collectionToCopy} is {@code null}
      */
-    public static Object[] getContentsOfArrayBackedDataset(
-                                                            final Object collectionToCopy,
+    public static Object[] getContentsOfArrayBackedDataset( final Object collectionToCopy,
                                                             final String backingStoreFieldName )
         {
 
@@ -374,12 +378,11 @@ public class ReflectBackingStores
      * @deprecated Use {@link #getContentsOfArrayBackedDataset(Object,String,String,int)} instead
      */
     @Deprecated( forRemoval = true, since = "1.0" )
-    public static Object[] getContentsOfArrayBackedCollection(
-                                                               final Object collectionToCopy,
+    public static Object[] getContentsOfArrayBackedCollection( final Object collectionToCopy,
                                                                final String backingStoreFieldName,
                                                                final String entryCountFieldName,
                                                                final int entryCount )
-        throws TestingException
+            throws TestingException
         {
 
         return getContentsOfArrayBackedDataset( collectionToCopy,
@@ -422,7 +425,7 @@ public class ReflectBackingStores
             {
 
             // handle optional parameters
-            if ( null == entryCountFieldName )
+            if ( entryCountFieldName == null )
                 {
                 entryCountFieldName = "numberOfEntries" ;
                 }
@@ -447,12 +450,10 @@ public class ReflectBackingStores
                                                                entryCountFieldName,
                                                                collectionToCopy.toString(),
                                                                exceptionClassName,
-                                                               ( null ==
-                                                                 e.getMessage()
+                                                               ( e.getMessage() == null
                                                                      ? ""
                                                                      : ": " ),
-                                                               ( null ==
-                                                                 e.getMessage()
+                                                               ( e.getMessage() == null
                                                                      ? ""
                                                                      : e.getMessage() ) ) ;
 
@@ -479,12 +480,10 @@ public class ReflectBackingStores
                                                            backingStoreFieldName,
                                                            collectionToCopy.toString(),
                                                            exceptionClassName,
-                                                           ( null ==
-                                                             ex.getMessage()
+                                                           ( ex.getMessage() == null
                                                                  ? ""
                                                                  : ": " ),
-                                                           ( null ==
-                                                             ex.getMessage()
+                                                           ( ex.getMessage() == null
                                                                  ? ""
                                                                  : ex.getMessage() ) ) ;
 
@@ -630,16 +629,16 @@ public class ReflectBackingStores
 
         Object[] collectionContents = null ;
 
-        if ( null != collectionToCopy )
+        if ( collectionToCopy != null )
             {
 
             // handle optional parameters
-            if ( null == entryCountFieldName )
+            if ( entryCountFieldName == null )
                 {
                 entryCountFieldName = "numberOfEntries" ;
                 }
 
-            if ( null == frontIndexFieldName )
+            if ( frontIndexFieldName == null )
                 {
                 frontIndexFieldName = "frontIndex" ;
                 }
@@ -669,12 +668,10 @@ public class ReflectBackingStores
                                                                entryCountFieldName,
                                                                collectionToCopy.toString(),
                                                                exceptionClassName,
-                                                               ( null ==
-                                                                 e.getMessage()
+                                                               ( e.getMessage() == null
                                                                      ? ""
                                                                      : ": " ),
-                                                               ( null ==
-                                                                 e.getMessage()
+                                                               ( e.getMessage() == null
                                                                      ? ""
                                                                      : e.getMessage() ) ) ;
 
@@ -700,12 +697,10 @@ public class ReflectBackingStores
                                                            frontIndexFieldName,
                                                            collectionToCopy.toString(),
                                                            exceptionClassName,
-                                                           ( null ==
-                                                             e.getMessage()
+                                                           ( e.getMessage() == null
                                                                  ? ""
                                                                  : ": " ),
-                                                           ( null ==
-                                                             e.getMessage()
+                                                           ( e.getMessage() == null
                                                                  ? ""
                                                                  : e.getMessage() ) ) ;
 
@@ -730,12 +725,10 @@ public class ReflectBackingStores
                                                            backIndexFieldName,
                                                            collectionToCopy.toString(),
                                                            exceptionClassName,
-                                                           ( null ==
-                                                             e.getMessage()
+                                                           ( e.getMessage() == null
                                                                  ? ""
                                                                  : ": " ),
-                                                           ( null ==
-                                                             e.getMessage()
+                                                           ( e.getMessage() == null
                                                                  ? ""
                                                                  : e.getMessage() ) ) ;
 
@@ -759,12 +752,10 @@ public class ReflectBackingStores
                                                            backingStoreFieldName,
                                                            collectionToCopy.toString(),
                                                            exceptionClassName,
-                                                           ( null ==
-                                                             e.getMessage()
+                                                           ( e.getMessage() == null
                                                                  ? ""
                                                                  : ": " ),
-                                                           ( null ==
-                                                             e.getMessage()
+                                                           ( e.getMessage() == null
                                                                  ? ""
                                                                  : e.getMessage() ) ) ;
 
@@ -807,12 +798,10 @@ public class ReflectBackingStores
                                                            backingStoreFieldName,
                                                            collectionToCopy.toString(),
                                                            exceptionClassName,
-                                                           ( null ==
-                                                             ex.getMessage()
+                                                           ( ex.getMessage() == null
                                                                  ? ""
                                                                  : ": " ),
-                                                           ( null ==
-                                                             ex.getMessage()
+                                                           ( ex.getMessage() == null
                                                                  ? ""
                                                                  : ex.getMessage() ) ) ;
 
@@ -829,12 +818,10 @@ public class ReflectBackingStores
                                                            backingStoreFieldName,
                                                            collectionToCopy.toString(),
                                                            exceptionClassName,
-                                                           ( null ==
-                                                             ex.getMessage()
+                                                           ( ex.getMessage() == null
                                                                  ? ""
                                                                  : ": " ),
-                                                           ( null ==
-                                                             ex.getMessage()
+                                                           ( ex.getMessage() == null
                                                                  ? ""
                                                                  : ex.getMessage() ) ) ;
 
@@ -949,47 +936,50 @@ public class ReflectBackingStores
      * @param backingStoreFieldName
      *     field name of the collection's backing store
      * @param entryCountFieldName
-     *     field name of the collection's entry count (optional - defaults to "numberOfEntries")
+     *     field name of the collection's entry count (optional - defaults to
+     *     "numberOfEntries")
      * @param entryCount
-     *     expected number of entries in the collection - only used if non-negative
+     *     expected number of entries in the collection - only used if
+     *     non-negative
      * @param nodeDataFieldName
-     *     field name of the collection's node's data reference (optional - defaults to "data")
+     *     field name of the collection's node's data reference (optional -
+     *     defaults to "data")
      * @param nodeNextFieldName
-     *     field name of the collection's node's next reference (optional - defaults to "next")
+     *     field name of the collection's node's next reference (optional -
+     *     defaults to "next")
      *
-     * @return array of the contents of {@code collectionToCopy} or {@code null} if
-     *     {@code collectionToCopy} is {@code null}
+     * @return array of the contents of {@code collectionToCopy} or {@code null}
+     *     if {@code collectionToCopy} is {@code null}
      *
      * @throws TestingException
      *     any wrapped exceptions which may be thrown by reflection
      */
-    public static Object[] getContentsOfChainBackedDataset(
-                                                            final Object collectionToCopy,
+    public static Object[] getContentsOfChainBackedDataset( final Object collectionToCopy,
                                                             final String backingStoreFieldName,
                                                             String entryCountFieldName,
                                                             int entryCount,
                                                             String nodeDataFieldName,
                                                             String nodeNextFieldName )
-        throws TestingException
+            throws TestingException
         {
 
         Object[] collectionContents = null ;
 
-        if ( null != collectionToCopy )
+        if ( collectionToCopy != null )
             {
 
             // handle optional parameters
-            if ( null == entryCountFieldName )
+            if ( entryCountFieldName == null )
                 {
                 entryCountFieldName = "numberOfEntries" ;
                 }
 
-            if ( null == nodeDataFieldName )
+            if ( nodeDataFieldName == null )
                 {
                 nodeDataFieldName = "data" ;
                 }
 
-            if ( null == nodeNextFieldName )
+            if ( nodeNextFieldName == null )
                 {
                 nodeNextFieldName = "next" ;
                 }
@@ -1014,12 +1004,10 @@ public class ReflectBackingStores
                                                                entryCountFieldName,
                                                                collectionToCopy.toString(),
                                                                exceptionClassName,
-                                                               ( null ==
-                                                                 e.getMessage()
+                                                               ( e.getMessage() == null
                                                                      ? ""
                                                                      : ": " ),
-                                                               ( null ==
-                                                                 e.getMessage()
+                                                               ( e.getMessage() == null
                                                                      ? ""
                                                                      : e.getMessage() ) ) ;
 
@@ -1038,7 +1026,7 @@ public class ReflectBackingStores
                                                         backingStoreFieldName ) ;
                 int i = 0 ;
 
-                while ( null != currentNode )
+                while ( currentNode != null )
                     {
 
                     if ( i == entryCount )
@@ -1064,12 +1052,10 @@ public class ReflectBackingStores
                                                            backingStoreFieldName,
                                                            collectionToCopy.toString(),
                                                            exceptionClassName,
-                                                           ( null ==
-                                                             ex.getMessage()
+                                                           ( ex.getMessage() == null
                                                                  ? ""
                                                                  : ": " ),
-                                                           ( null ==
-                                                             ex.getMessage()
+                                                           ( ex.getMessage() == null
                                                                  ? ""
                                                                  : ex.getMessage() ) ) ;
 

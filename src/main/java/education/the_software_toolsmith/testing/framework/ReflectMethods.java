@@ -32,6 +32,7 @@ import java.util.List ;
  * @author David M Rosenberg
  *
  * @version 1.0 2025-07-19 Initial implementation - extracted from framework's {@link Reflection}
+ * @version 1.0.1 2025-09-30 undo reversing '==' and '!=' comparisons
  */
 public class ReflectMethods
     {
@@ -141,11 +142,11 @@ public class ReflectMethods
                     final Type[] definedGenericParameterTypes = aMethod.getGenericParameterTypes() ;
 
                     // no parameters defined
-                    if ( 0 == definedParameterTypes.length )
+                    if ( definedParameterTypes.length == 0 )
                         {
 
-                        if ( ( null == parameterTypes ) ||
-                             ( 0 == parameterTypes.length ) )
+                        if ( ( parameterTypes == null ) ||
+                             ( parameterTypes.length == 0 ) )
                             {
                             // no parameters supplied - found it
                             theMethod = aMethod ;
@@ -195,7 +196,7 @@ public class ReflectMethods
 
                 }
 
-            if ( null == theMethod )
+            if ( theMethod == null )
                 {
                 // didn't find a matching method
                 throw new NoSuchMethodException() ;
@@ -225,13 +226,13 @@ public class ReflectMethods
             // build a description of the expected parameter list
             final StringBuilder displayParameterTypes = new StringBuilder() ;
 
-            if ( null != parameterTypes )
+            if ( parameterTypes != null )
                 {
 
                 for ( int i = 0 ; i < parameterTypes.length ; i++ )
                     {
 
-                    if ( 0 != i )
+                    if ( i != 0 )
                         {
                         displayParameterTypes.append( ", " ) ;
                         }
@@ -249,10 +250,10 @@ public class ReflectMethods
                                                        theClass.getSimpleName(),
                                                        Arrays.toString( arguments ),
                                                        exceptionClassName,
-                                                       ( null == e.getMessage()
+                                                       ( e.getMessage() == null
                                                            ? ""
                                                            : ": " ),
-                                                       ( null == e.getMessage()
+                                                       ( e.getMessage() == null
                                                            ? ""
                                                            : e.getMessage() ) ) ;
 

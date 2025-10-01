@@ -31,6 +31,7 @@ import java.lang.reflect.Type ;
  * @author David M Rosenberg
  *
  * @version 1.0 2025-07-19 Initial implementation - extracted from framework's {@link Reflection}
+ * @version 1.0.1 2025-09-30 undo reversing '==' and '!=' comparisons
  */
 public class ReflectReferenceTypes
     {
@@ -43,8 +44,6 @@ public class ReflectReferenceTypes
 
     /**
      * prevent instantiation
-     *
-     * @since 1.0
      */
     private ReflectReferenceTypes()
         {
@@ -116,11 +115,11 @@ public class ReflectReferenceTypes
                 final Type[] definedGenericParameterTypes = aConstructor.getGenericParameterTypes() ;
 
                 // no parameters defined
-                if ( 0 == definedParameterTypes.length )
+                if ( definedParameterTypes.length == 0 )
                     {
 
-                    if ( ( null == parameterTypes ) ||
-                         ( 0 == parameterTypes.length ) )
+                    if ( ( parameterTypes == null ) ||
+                         ( parameterTypes.length == 0 ) )
                         {
                         // no parameters supplied - found it
                         theConstructor = aConstructor ;
@@ -166,7 +165,7 @@ public class ReflectReferenceTypes
 
                 }
 
-            if ( null == theConstructor )
+            if ( theConstructor == null )
                 {
                 // didn't find a matching method
                 throw new NoSuchMethodException() ;
@@ -192,13 +191,13 @@ public class ReflectReferenceTypes
             // build a description of the expected parameter list
             final StringBuilder displayParameterTypes = new StringBuilder() ;
 
-            if ( null != parameterTypes )
+            if ( parameterTypes != null )
                 {
 
                 for ( int i = 0 ; i < parameterTypes.length ; i++ )
                     {
 
-                    if ( 0 != i )
+                    if ( i != 0 )
                         {
                         displayParameterTypes.append( ", " ) ;
                         }
@@ -209,25 +208,21 @@ public class ReflectReferenceTypes
                 }
 
             final String errorMessage = String.format( "Failed to invoke %s-arg constructor %s(%s) in class %s with argument(s): %s:%n\t%s%s",
-                                                       ( ( null ==
-                                                           arguments ) ||
-                                                         ( 0 ==
-                                                           arguments.length )
+                                                       ( ( arguments == null ) ||
+                                                         ( arguments.length == 0 )
                                                                ? "no"
                                                                : String.format( "%,d",
                                                                                 arguments.length ) ),
                                                        theClass.getSimpleName(),
                                                        displayParameterTypes,
                                                        theClass.getSimpleName(),
-                                                       ( ( null ==
-                                                           arguments ) ||
-                                                         ( 0 ==
-                                                           arguments.length )
+                                                       ( ( arguments == null ) ||
+                                                         ( arguments.length == 0 )
                                                                ? "n/a"
                                                                : datasetToString( arguments ) ),
                                                        e.getClass()
                                                         .getSimpleName(),
-                                                       ( null == e.getMessage()
+                                                       ( e.getMessage() == null
                                                            ? ""
                                                            : ": " +
                                                              e.getMessage() ) ) ;

@@ -26,6 +26,7 @@ import java.lang.reflect.Field ;
  * @author David M Rosenberg
  *
  * @version 1.0 2025-07-19 Initial implementation - extracted from framework's {@link Reflection}
+ * @version 1.0.1 2025-09-29 undo reversing '==' and '!=' comparisons
  */
 public class ReflectDataFields
     {
@@ -128,7 +129,7 @@ public class ReflectDataFields
 
             final Class<?> superClass = theClass.getSuperclass() ;
 
-            if ( null != superClass )
+            if ( superClass != null )
                 {
                 return getField( superClass,
                                  anInstance,
@@ -152,10 +153,10 @@ public class ReflectDataFields
 //                                                       fieldName,
 //                                                       anInstance.toString(),
 //                                                       exceptionClassName,
-//                                                       ( null == ex.getMessage()
+//                                                       ( ex.getMessage() == null
 //                                                           ? ""
 //                                                           : ": " ),
-//                                                       ( null == ex.getMessage()
+//                                                       ( ex.getMessage() == null
 //                                                           ? ""
 //                                                           : ex.getMessage() ) ) ;
 //
@@ -203,7 +204,7 @@ public class ReflectDataFields
 
         final String thrownClassName = thrown.getClass().getSimpleName() ;
 
-        if ( null == theClass )
+        if ( theClass == null )
             {
             theClass = anInstance.getClass() ;
             }
@@ -216,10 +217,10 @@ public class ReflectDataFields
                                                    fieldName,
                                                    anInstance.toString(),
                                                    thrownClassName,
-                                                   ( null == thrown.getMessage()
+                                                   ( thrown.getMessage() == null
                                                        ? ""
                                                        : ": " ),
-                                                   ( null == thrown.getMessage()
+                                                   ( thrown.getMessage() == null
                                                        ? ""
                                                        : thrown.getMessage() ) ) ;
 
@@ -270,10 +271,10 @@ public class ReflectDataFields
 //                                                       fieldName,
 //                                                       anInstance.toString(),
 //                                                       exceptionClassName,
-//                                                       ( null == e.getMessage()
+//                                                       ( e.getMessage() == null
 //                                                           ? ""
 //                                                           : ": " ),
-//                                                       ( null == e.getMessage()
+//                                                       ( e.getMessage() == null
 //                                                           ? ""
 //                                                           : e.getMessage() ) ) ;
 //
@@ -329,7 +330,7 @@ public class ReflectDataFields
 //                                                       anInstance.toString(),
 //                                                       e.getClass()
 //                                                        .getSimpleName(),
-//                                                       ( null == e.getMessage()
+//                                                       ( e.getMessage() == null
 //                                                           ? ""
 //                                                           : ": " +
 //                                                             e.getMessage() ) ) ;
@@ -385,7 +386,7 @@ public class ReflectDataFields
 //                                                       anInstance.toString(),
 //                                                       e.getClass()
 //                                                        .getSimpleName(),
-//                                                       ( null == e.getMessage()
+//                                                       ( e.getMessage() == null
 //                                                           ? ""
 //                                                           : ": " +
 //                                                             e.getMessage() ) ) ;
@@ -441,7 +442,7 @@ public class ReflectDataFields
 //                                                       anInstance.toString(),
 //                                                       e.getClass()
 //                                                        .getSimpleName(),
-//                                                       ( null == e.getMessage()
+//                                                       ( e.getMessage() == null
 //                                                           ? ""
 //                                                           : ": " +
 //                                                             e.getMessage() ) ) ;
@@ -498,7 +499,7 @@ public class ReflectDataFields
 //                                                       anInstance.toString(),
 //                                                       e.getClass()
 //                                                        .getSimpleName(),
-//                                                       ( null == e.getMessage()
+//                                                       ( e.getMessage() == null
 //                                                           ? ""
 //                                                           : ": " +
 //                                                             e.getMessage() ) ) ;
@@ -555,7 +556,7 @@ public class ReflectDataFields
 //                                                       anInstance.toString(),
 //                                                       e.getClass()
 //                                                        .getSimpleName(),
-//                                                       ( null == e.getMessage()
+//                                                       ( e.getMessage() == null
 //                                                           ? ""
 //                                                           : ": " +
 //                                                             e.getMessage() ) ) ;
@@ -611,7 +612,7 @@ public class ReflectDataFields
 //                                                       anInstance.toString(),
 //                                                       e.getClass()
 //                                                        .getSimpleName(),
-//                                                       ( null == e.getMessage()
+//                                                       ( e.getMessage() == null
 //                                                           ? ""
 //                                                           : ": " +
 //                                                             e.getMessage() ) ) ;
@@ -668,7 +669,7 @@ public class ReflectDataFields
 //                                                       anInstance.toString(),
 //                                                       e.getClass()
 //                                                        .getSimpleName(),
-//                                                       ( null == e.getMessage()
+//                                                       ( e.getMessage() == null
 //                                                           ? ""
 //                                                           : ": " +
 //                                                             e.getMessage() ) ) ;
@@ -725,7 +726,7 @@ public class ReflectDataFields
 //                                                       anInstance.toString(),
 //                                                       e.getClass()
 //                                                        .getSimpleName(),
-//                                                       ( null == e.getMessage()
+//                                                       ( e.getMessage() == null
 //                                                           ? ""
 //                                                           : ": " +
 //                                                             e.getMessage() ) ) ;
@@ -789,7 +790,7 @@ public class ReflectDataFields
 //                                                       anInstance.toString(),
 //                                                       ex.getClass()
 //                                                         .getSimpleName(),
-//                                                       ( null == ex.getMessage()
+//                                                       ( ex.getMessage() == null
 //                                                           ? ""
 //                                                           : ": " +
 //                                                             ex.getMessage() ) ) ;
@@ -852,7 +853,7 @@ public class ReflectDataFields
 //                                                       anInstance.toString(),
 //                                                       ex.getClass()
 //                                                         .getSimpleName(),
-//                                                       ( null == ex.getMessage()
+//                                                       ( ex.getMessage() == null
 //                                                           ? ""
 //                                                           : ": " +
 //                                                             ex.getMessage() ) ) ;
@@ -914,7 +915,7 @@ public class ReflectDataFields
 //                                                       anInstance.toString(),
 //                                                       ex.getClass()
 //                                                         .getSimpleName(),
-//                                                       ( null == ex.getMessage()
+//                                                       ( ex.getMessage() == null
 //                                                           ? ""
 //                                                           : ": " +
 //                                                             ex.getMessage() ) ) ;
@@ -976,7 +977,7 @@ public class ReflectDataFields
 //                                                       anInstance.toString(),
 //                                                       ex.getClass()
 //                                                         .getSimpleName(),
-//                                                       ( null == ex.getMessage()
+//                                                       ( ex.getMessage() == null
 //                                                           ? ""
 //                                                           : ": " +
 //                                                             ex.getMessage() ) ) ;
@@ -1039,7 +1040,7 @@ public class ReflectDataFields
 //                                                       anInstance.toString(),
 //                                                       ex.getClass()
 //                                                         .getSimpleName(),
-//                                                       ( null == ex.getMessage()
+//                                                       ( ex.getMessage() == null
 //                                                           ? ""
 //                                                           : ": " +
 //                                                             ex.getMessage() ) ) ;
@@ -1100,7 +1101,7 @@ public class ReflectDataFields
 //                                                       anInstance.toString(),
 //                                                       ex.getClass()
 //                                                         .getSimpleName(),
-//                                                       ( null == ex.getMessage()
+//                                                       ( ex.getMessage() == null
 //                                                           ? ""
 //                                                           : ": " +
 //                                                             ex.getMessage() ) ) ;
@@ -1160,7 +1161,7 @@ public class ReflectDataFields
 //                                                       anInstance.toString(),
 //                                                       ex.getClass()
 //                                                         .getSimpleName(),
-//                                                       ( null == ex.getMessage()
+//                                                       ( ex.getMessage() == null
 //                                                           ? ""
 //                                                           : ": " +
 //                                                             ex.getMessage() ) ) ;
@@ -1223,7 +1224,7 @@ public class ReflectDataFields
 //                                                       anInstance.toString(),
 //                                                       ex.getClass()
 //                                                         .getSimpleName(),
-//                                                       ( null == ex.getMessage()
+//                                                       ( ex.getMessage() == null
 //                                                           ? ""
 //                                                           : ": " +
 //                                                             ex.getMessage() ) ) ;
@@ -1284,7 +1285,7 @@ public class ReflectDataFields
 //                                                       anInstance.toString(),
 //                                                       ex.getClass()
 //                                                         .getSimpleName(),
-//                                                       ( null == ex.getMessage()
+//                                                       ( ex.getMessage() == null
 //                                                           ? ""
 //                                                           : ": " +
 //                                                             ex.getMessage() ) ) ;

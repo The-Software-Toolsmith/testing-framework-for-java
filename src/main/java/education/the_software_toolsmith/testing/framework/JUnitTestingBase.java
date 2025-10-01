@@ -104,6 +104,11 @@ import org.junit.jupiter.api.TestInstance.Lifecycle ;
  *     <li>keep {@code xxxEachTest()} as deprecated, temporary pass-throughs
  *     </ul>
  * @version 7.0.1 2025-07-29 remove deprecated methods - they were executing twice
+ * @version 7.0.2 2025-09-30
+ *     <ul>
+ *     <li>>undo reversing '==' and '!=' comparisons
+ *     <li>cosmetic changes
+ *     </ul>
  */
 @DisplayName( "JUnit Testing Base" )
 @TestInstance( Lifecycle.PER_CLASS )
@@ -149,7 +154,7 @@ public class JUnitTestingBase extends TestingBase
         String baseName = testInfo.getDisplayName() ;
         final int colonColonIndex = baseName.indexOf( "::" ) ;
 
-        if ( -1 != colonColonIndex )
+        if ( colonColonIndex != -1 )
             {
             baseName = baseName.substring( 0, colonColonIndex ).trim() ;
             }
@@ -198,14 +203,14 @@ public class JUnitTestingBase extends TestingBase
         // display summary results
         if ( super.totalTestsAttempted > 0 )
             {
-            writeConsole( "%n     Summary Test Results%n%n" ) ;
+            writeConsole( "%n\tSummary Test Results%n%n" ) ;
 
             for ( final String testResult : super.summaryTestResults )
                 {
                 writeConsole( "%s%n", testResult ) ;
                 }
 
-            writeConsole( "%n     Successfully completed %,3d of %,3d tests (%3d%%) attempted for class %s%n",
+            writeConsole( "%n\tSuccessfully completed %,3d of %,3d tests (%3d%%) attempted for class %s%n",
                           super.totalTestsSucceeded,
                           super.totalTestsAttempted,
                           ( super.totalTestsSucceeded * 100 ) /
@@ -214,7 +219,7 @@ public class JUnitTestingBase extends TestingBase
             }
         else
             {
-            writeConsole( "%n     No tests attempted for class %s%n",
+            writeConsole( "%n\tNo tests attempted for class %s%n",
                           testInfo.getDisplayName() ) ;
             }
 
@@ -253,7 +258,7 @@ public class JUnitTestingBase extends TestingBase
 
             // filter for stubbed return values
             if ( ( super.stubBehaviorSeenCount > 0 ) &&
-                 ( 0 == super.nonStubTestsPassed ) )
+                 ( super.nonStubTestsPassed == 0 ) )
                 {
                 // only saw correct responses which matched the stub values
                 // consider this a total failure rather than a (misleading)

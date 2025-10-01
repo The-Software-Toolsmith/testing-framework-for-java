@@ -43,7 +43,8 @@ import java.util.Queue ;
  * @author David M Rosenberg
  *
  * @version 1.0 2018-05-25 initial set of tests<br>
- * @version 1.1 2018-06-09 revise structure to use TestInfo instead of certain hard-coded text
+ * @version 1.1 2018-06-09 revise structure to use TestInfo instead of certain
+ *     hard-coded text
  * @version 1.2 2018-09-02 add timeouts
  * @version 1.3 2019-01-14 more implementation
  * @version 1.3.1 2019-01-17 cosmetic changes
@@ -51,7 +52,8 @@ import java.util.Queue ;
  *     <ul>
  *     <li>restructure tests
  *     <li>disable System.exit() during testing
- *     <li>start making each subtest independent so they'll all run even if one fails
+ *     <li>start making each subtest independent so they'll all run even if one
+ *     fails
  *     </ul>
  * @version 2.1 2019-05-17
  *     <ul>
@@ -67,20 +69,23 @@ import java.util.Queue ;
  *     <li>add summary test results
  *     </ul>
  * @version 3.1 2019-06-28 move detailed activity to log file
- * @version 4.0 2019-07-04 split general purpose utilities methods into separate class
+ * @version 4.0 2019-07-04 split general purpose utilities methods into separate
+ *     class
  * @version 5.0 2019-10-07 revise for Stack ADT
  * @version 5.1 2020-01-26 cleanup toward DRCo coding standard compliance
  * @version 5.2 2020-05-14
  *     <ul>
  *     <li>cleanup comments
  *     <li>enhance null argument handling
- *     <li>in parseArguments(): correct numeric range bounds parsing; add support for data-supplied
- *     step, repeating group count, duplicate count
+ *     <li>in parseArguments(): correct numeric range bounds parsing; add
+ *     support for data-supplied step, repeating group count, duplicate count
  *     <li>output formatting adjustments to improve alignment and readability
  *     <li>add PlaceholderException to support specific Exception detection
- *     <li>add support for detection and display of boolean/Boolean and char/Character types
+ *     <li>add support for detection and display of boolean/Boolean and
+ *     char/Character types
  *     </ul>
- * @version 5.3 2020-06-03 add startTest() pass-through for backward compatibility
+ * @version 5.3 2020-06-03 add startTest() pass-through for backward
+ *     compatibility
  * @version 5.4 2020-07-22
  *     <ul>
  *     <li>add instance field retrieval and modification methods
@@ -91,13 +96,13 @@ import java.util.Queue ;
  *     <li>consolidate/simplify field access methods
  *     <li>add collection retrieval methods
  *     </ul>
- * @version 6.0 2020-09-13 Split into general unit testing support and JUnit-specific support - this
- *     class implements the former.
+ * @version 6.0 2020-09-13 Split into general unit testing support and
+ *     JUnit-specific support - this class implements the former.
  * @version 6.1 2021-04-11 Repackage as canned utility testing suite
- * @version 6.2 2021-05-01 in determineStubBehavior(), reset stub behavior indicator when
- *     isStubBehavior is false
- * @version 6.3 2021-05-01 change stub behavior tracking to only count methods marked as matching
- *     stub behavior if they pass
+ * @version 6.2 2021-05-01 in determineStubBehavior(), reset stub behavior
+ *     indicator when isStubBehavior is false
+ * @version 6.3 2021-05-01 change stub behavior tracking to only count methods
+ *     marked as matching stub behavior if they pass
  * @version 6.4 2021-06-19
  *     <ul>
  *     <li>remove dependencies upon JUnit
@@ -117,30 +122,37 @@ import java.util.Queue ;
  * @version 6.8 2022-04-25 cosmetic fix to message when enabling debugging
  * @version 6.9 2022-10-11 modify log file naming
  * @version 6.10 2023-02-22 modify log file naming
- * @version 7.0 2023-10-19 make changes to not use the {@code SecurityManager} if running under Java
- *     17 or later - it's deprecated<br>
+ * @version 7.0 2023-10-19 make changes to not use the {@code SecurityManager}
+ *     if running under Java 17 or later - it's deprecated<br>
  *     Note: this is a stop-gap implementation until the SM is removed
- * @version 7.1 2024-02-24 complete updates for deprecation of {@code SecurityManager}
+ * @version 7.1 2024-02-24 complete updates for deprecation of
+ *     {@code SecurityManager}
  * @version 7.2 2024-09-18
  *     <ul>
  *     <li>fully remove security manager references <br>
  *     Note:
  *     <ul>
- *     <li>we're far enough removed from Java 16 and prior that we don't expect to run there
+ *     <li>we're far enough removed from Java 16 and prior that we don't expect
+ *     to run there
  *     <li>if we do, we simply won't intercept {@code System.exit()}
  *     </ul>
- *     <li>replace security manager code with placeholder comments in case an alternate mechanism
- *     becomes available to intercept {@code System.exit()}
+ *     <li>replace security manager code with placeholder comments in case an
+ *     alternate mechanism becomes available to intercept {@code System.exit()}
  *     <li>remove now unnecessary imports
  *     </ul>
  * @version 7.3 2025-03-17 track method renaming in {@code TestData.java}
- * @version 7.3.1 2025-03-18 minor cosmetic change to configuration display to track with newer
- *     tests (LListDMRTests)
+ * @version 7.3.1 2025-03-18 minor cosmetic change to configuration display to
+ *     track with newer tests (LListDMRTests)
  * @version 7.3.2 2025-07-18
  *     <ul>
- *     <li>swap operands to '==' and '!=' when comparing against a constant so the constant is the
- *     left operand
+ *     <li>swap operands to '==' and '!=' when comparing against a constant so
+ *     the constant is the left operand
  *     <li>reorder methods
+ *     </ul>
+ * @version 7.3.3 2025-09-30
+ *     <ul>
+ *     <li>>undo reversing '==' and '!=' comparisons
+ *     <li>cosmetic changes
  *     </ul>
  */
 public class TestingBase
@@ -278,12 +290,12 @@ public class TestingBase
 
 //        // auto-detect package and class to test
 //        // - derived from test class' name
-//        if ( null == specifiedTestClassPackageName )
+//        if ( specifiedTestClassPackageName == null )
 //            {
 //            specifiedTestClassPackageName = this.getClass().getPackageName() ;
 //            }
 //
-//        if ( null == specifiedTestClassSimpleName )
+//        if ( specifiedTestClassSimpleName == null )
 //            {
 //            specifiedTestClassSimpleName = this.getClass().getSimpleName().replace( "DMRTests", "" ) ;
 //            }
@@ -294,7 +306,7 @@ public class TestingBase
         this.testClassPackageName = specifiedTestClassPackageName ;
         this.testClassSimpleName = specifiedTestClassSimpleName ;
 
-        this.testClassFullName = ( null == this.testClassPackageName
+        this.testClassFullName = ( this.testClassPackageName == null
             ? ""
             : this.testClassPackageName + "." ) + this.testClassSimpleName ;
 
@@ -616,7 +628,7 @@ public class TestingBase
         List<Object> parsedArguments = null ;
 
         // parse the parameter if it's not null
-        if ( null != arguments )
+        if ( arguments != null )
             {
             arguments = arguments.trim() ;
 
@@ -629,7 +641,7 @@ public class TestingBase
 
             String[] collectionContentsStrings ;
 
-            if ( 0 == arguments.length() )
+            if ( arguments.length() == 0 )
                 {
                 collectionContentsStrings = new String[ 0 ] ;
                 }
@@ -643,7 +655,7 @@ public class TestingBase
                 {
                 collectionContentsStrings[ i ] = collectionContentsStrings[ i ].trim() ;
 
-                if ( 0 == collectionContentsStrings[ i ].length() )
+                if ( collectionContentsStrings[ i ].length() == 0 )
                     {
                     collectionContentsStrings[ i ] = "" ;
                     }
@@ -655,7 +667,7 @@ public class TestingBase
                 {
 
                 // check for a 0-length string
-                if ( 0 == collectionContentsString.length() )
+                if ( collectionContentsString.length() == 0 )
                     {
                     parsedArguments.add( "" ) ;
                     }
@@ -667,13 +679,13 @@ public class TestingBase
                 // try to convert to integers (long actually)
                 else if ( Character.isDigit( collectionContentsString.charAt( 0 ) ) ||
                           ( ( collectionContentsString.length() >= 2 ) &&
-                            ( '-' == collectionContentsString.charAt( 0 ) ) &&
+                            ( collectionContentsString.charAt( 0 ) == '-' ) &&
                             Character.isDigit( collectionContentsString.charAt( 1 ) ) ) )
                     {
                     parsedArguments.add( Long.parseLong( collectionContentsString ) ) ;
                     }
                 // see if we want a range of numbers
-                else if ( '[' == collectionContentsString.charAt( 0 ) )
+                else if ( collectionContentsString.charAt( 0 ) == '[' )
                     {   // add elements leftBound..rightBound by step
                     final String[] parts = collectionContentsString.substring( 1,
                                                                                collectionContentsString.length() -
@@ -685,7 +697,7 @@ public class TestingBase
                     final int rightBound = Integer.parseInt( parts[ 1 ] ) ;
 
                     final int step = parts.length > 2
-                        ? 0 == parts[ 2 ].length()
+                        ? parts[ 2 ].length() == 0
                             ? 1
                             : Integer.parseInt( parts[ 2 ] )
                         : leftBound <= rightBound
@@ -693,13 +705,13 @@ public class TestingBase
                             : -1 ;
 
                     final int duplicates = parts.length > 3
-                        ? 0 == parts[ 3 ].length()
+                        ? parts[ 3 ].length() == 0
                             ? 1
                             : Integer.parseInt( parts[ 3 ] )
                         : 1 ;
 
                     final int groups = parts.length > 4
-                        ? 0 == parts[ 4 ].length()
+                        ? parts[ 4 ].length() == 0
                             ? 1
                             : Integer.parseInt( parts[ 4 ] )
                         : 1 ;
@@ -728,9 +740,9 @@ public class TestingBase
 
                     }
                 // see if we want an individual character
-                else if ( ( 3 == collectionContentsString.length() ) &&
-                          ( '\'' == collectionContentsString.charAt( 0 ) ) &&
-                          ( '\'' == collectionContentsString.charAt( 2 ) ) )
+                else if ( ( collectionContentsString.length() == 3 ) &&
+                          ( collectionContentsString.charAt( 0 ) == '\'' ) &&
+                          ( collectionContentsString.charAt( 2 ) == '\'' ) )
                     {
                     parsedArguments.add( collectionContentsString.charAt( 1 ) ) ;
                     }
@@ -753,7 +765,7 @@ public class TestingBase
         // assertion: parsedArguments is either null or points to an array of
         // Longs, Strings, Characters, Booleans, nulls - may be a zero-length array
 
-        return null == parsedArguments
+        return parsedArguments == null
             ? null
             : parsedArguments.toArray() ;
 
@@ -842,7 +854,7 @@ public class TestingBase
         determineStubBehavior( isStubBehavior ) ;
 
         // create placeholder argument labels if none provided
-        if ( null == argumentLabels )
+        if ( argumentLabels == null )
             {
             argumentLabels = new String[ collectionContentsArguments.length ] ;
 
@@ -868,7 +880,7 @@ public class TestingBase
 
             }
 
-        final String labelFormat = "        %-" + longestLabelLength +
+        final String labelFormat = "\t%-" + longestLabelLength +
                                    "s: %s%n" ;
 
         // count this test
@@ -959,7 +971,7 @@ public class TestingBase
 
         System.out.printf( format, parameters ) ;
 
-        if ( System.out != this.detailedLogStream )
+        if ( this.detailedLogStream != System.out )
             {
             writeLog( format, parameters ) ;
             }

@@ -29,7 +29,8 @@ import java.util.Arrays ;
  * @author David M Rosenberg
  *
  * @version 1.0 2018-05-25 initial set of tests
- * @version 1.1 2018-06-09 revise structure to use TestInfo instead of certain hard-coded text
+ * @version 1.1 2018-06-09 revise structure to use TestInfo instead of certain
+ *     hard-coded text
  * @version 1.2 2018-09-02 add timeouts
  * @version 1.3 2019-01-14 more implementation
  * @version 1.3.1 2019-01-17 cosmetic changes
@@ -37,7 +38,8 @@ import java.util.Arrays ;
  *     <ul>
  *     <li>restructure tests
  *     <li>disable System.exit() during testing
- *     <li>start making each subtest independent so they'll all run even if one fails
+ *     <li>start making each subtest independent so they'll all run even if one
+ *     fails
  *     </ul>
  * @version 2.1 2019-05-17
  *     <ul>
@@ -53,20 +55,23 @@ import java.util.Arrays ;
  *     <li>add summary test results
  *     </ul>
  * @version 3.1 2019-06-28 move detailed activity to log file
- * @version 4.0 2019-07-04 split general purpose utilities methods into separate class
+ * @version 4.0 2019-07-04 split general purpose utilities methods into separate
+ *     class
  * @version 5.0 2019-10-07 revise for Stack ADT
  * @version 5.1 2020-01-26 cleanup toward DRCo coding standard compliance
  * @version 5.2 2020-05-14
  *     <ul>
  *     <li>cleanup comments
  *     <li>enhance null argument handling
- *     <li>in parseArguments(): correct numeric range bounds parsing; add support for data-supplied
- *     step, repeating group count, duplicate count
+ *     <li>in parseArguments(): correct numeric range bounds parsing; add
+ *     support for data-supplied step, repeating group count, duplicate count
  *     <li>output formatting adjustments to improve alignment and readability
  *     <li>add PlaceholderException to support specific Exception detection
- *     <li>add support for detection and display of boolean/Boolean and char/Character types
+ *     <li>add support for detection and display of boolean/Boolean and
+ *     char/Character types
  *     </ul>
- * @version 5.3 2020-06-03 add startTest() pass-through for backward compatibility
+ * @version 5.3 2020-06-03 add startTest() pass-through for backward
+ *     compatibility
  * @version 5.4 2020-07-22
  *     <ul>
  *     <li>add instance field retrieval and modification methods
@@ -86,33 +91,44 @@ import java.util.Arrays ;
  *     <li>enhance countOccurances() to count matching {@code null}s
  *     </ul>
  * @version 5.8 2021-08-05 enhance {@code itemToString()}
- * @version 5.9 2021-11-18 enhance {@code compareArray()} to test for equal or identical contents
- * @version 5.10 2025-01-26 recode if/else in {@code itemToString()} to use switch for clarity
+ * @version 5.9 2021-11-18 enhance {@code compareArray()} to test for equal or
+ *     identical contents
+ * @version 5.10 2025-01-26 recode if/else in {@code itemToString()} to use
+ *     switch for clarity
  * @version 5.11 2025-02-28
  *     <ul>
- *     <li>change {@code default} condition in {@code itemToString()} to leave 'other' types to
- *     their own devices based on their {@code toString()}
+ *     <li>change {@code default} condition in {@code itemToString()} to leave
+ *     'other' types to their own devices based on their {@code toString()}
  *     <li>enable {@code main()}
  *     </ul>
- * @version 5.12 2025-03-09 minor cosmetic changes to {@code main()} and {@code itemToString()}
+ * @version 5.12 2025-03-09 minor cosmetic changes to {@code main()} and
+ *     {@code itemToString()}
  * @version 5.13 2025-03-15 replace remaining {@code item.toString()} with
  *     {@code itemToString( item )} for consistency
  * @version 6.0 2025-03-17
  *     <ul>
- *     <li>replace remaining {@code toString()}s with {@code itemToString()}, except for
- *     {@code StringBuilder} instances, for more consistent formatting
- *     <li>remove conditional logic to format {@code null} as "null" in all methods except
- *     itemToString()}
+ *     <li>replace remaining {@code toString()}s with {@code itemToString()},
+ *     except for {@code StringBuilder} instances, for more consistent
+ *     formatting
+ *     <li>remove conditional logic to format {@code null} as "null" in all
+ *     methods except itemToString()}
  *     <li>generalizations to prepare to support additional collection types
  *     <ul>
- *     <li>rename/remove {@code compareArrays()} methods to corresponding {@code compareDatasets()}
- *     <li>rename/remove {@code arrayToString()} and its variants to corresponding
- *     {@code datasetToString()} equivalents
+ *     <li>rename/remove {@code compareArrays()} methods to corresponding
+ *     {@code compareDatasets()}
+ *     <li>rename/remove {@code arrayToString()} and its variants to
+ *     corresponding {@code datasetToString()} equivalents
  *     <li>rename/remove {@code arrayContains()} to {@code datasetContains()}
  *     </ul>
  *     </ul>
- * @version 6.0.1 2025-07-18 swap operands to '==' and '!=' when comparing against a constant so the
- *     constant is the left operand
+ * @version 6.0.1 2025-07-18 swap operands to '==' and '!=' when comparing
+ *     against a constant so the constant is the left operand
+ * @version 6.0.2 2025-09-05
+ *     <ul>
+ *     <li>add tests for some edge cases
+ *     <li>some cosmetic changes wrt line wrapping
+ *     </ul>
+ * @version 6.0.3 2025-09-29 undo reversing '==' and '!=' comparisons
  *
  * @since 5.6
  */
@@ -120,7 +136,7 @@ public class TestData
     {
     // --------------------------------------------------
     //
-    // The following utilities are primarily used by the test methods
+    // The following utilities are primarily used by the unit test methods
     //
     // --------------------------------------------------
 
@@ -181,7 +197,7 @@ public class TestData
 
         final String fullString = datasetToFullString( theDataset ) ;
 
-        if ( ( null == fullString ) ||
+        if ( ( fullString == null ) ||
              ( fullString.length() <= maximumLength ) )
             {
             return fullString ;
@@ -227,7 +243,7 @@ public class TestData
     public static String datasetToFullString( final Object[] theDataset )
         {
 
-        if ( null == theDataset )
+        if ( theDataset == null )
             {
             return null ;
             }
@@ -266,12 +282,12 @@ public class TestData
     public static String itemToStringWithType( final Object item )
         {
 
-        return null == item
-            ? "null"
-            : ( isArray( item.getClass() )
-                ? item.getClass().getComponentType().getSimpleName()
-                : item.getClass().getSimpleName() ) +
-              " " + itemToString( item ) ;
+        return item == null
+                ? "null"
+                : ( isArray( item.getClass() )
+                        ? item.getClass().getComponentType().getSimpleName()
+                        : item.getClass().getSimpleName() )
+                  + " " + itemToString( item ) ;
 
         }  // end itemToStringWithType()
 
@@ -290,7 +306,7 @@ public class TestData
     public static String itemToString( final Object item )
         {
 
-        if ( null == item )
+        if ( item == null )
             {
             return "null" ;
             }
@@ -320,9 +336,13 @@ public class TestData
                 -> useDelimiter = stringDelimiter ;
             case final Character _
                 -> useDelimiter = charDelimiter ;
-            case final Long _,final Integer _,final Short _,final Byte _
+            case final Long _,
+                 final Integer _,
+                 final Short _,
+                 final Byte _
                 -> conversionSpecifier = "%,d" ;
-            case final Double _,final Float _
+            case final Double _,
+                 final Float _
                 -> conversionSpecifier = "%,f" ;
             case final Boolean _
                 ->
@@ -422,7 +442,7 @@ public class TestData
         {
 
         // if both dataset references are null, succeed
-        if ( ( null == expected ) && ( null == actual ) )       // both null
+        if ( ( expected == null ) && ( actual == null ) )       // both null
             {
             return ;
             }
@@ -432,17 +452,17 @@ public class TestData
         // if one dataset reference is null and the other is empty, fail
         // REPORT_BUG the compiler isn't recognizing that the test for non-null is redundant
         // REPORT_BUG can't be here if expected and actual are both null
-        if ( ( ( null == expected ) &&
-               ( ( null != actual ) && ( 0 == actual.length ) ) ) ||  // expected is null, actual is
+        if ( ( ( expected ==  null ) &&
+               ( ( actual != null ) && ( actual.length == 0 ) ) ) ||  // expected is null, actual is
                                                                       // empty
-             ( ( null == actual ) &&
-               ( ( null != expected ) && ( 0 == expected.length ) ) ) )   // actual is null,
+             ( ( actual == null ) &&
+               ( ( expected != null ) && ( expected.length == 0 ) ) ) )   // actual is null,
                                                                           // expected is empty
             {
             throw new TestingException( "comparing null to empty []" ) ;
             }
 
-        if ( ( null == expected ) || ( null == actual ) )
+        if ( ( expected == null ) || ( actual == null ) )
             {
             // 2xCk should this be IllegalStateException? other?
             throw new TestingException( "bad test data detected: one dataset is null and the other is neither null nor empty" ) ;
@@ -523,10 +543,10 @@ public class TestData
         for ( final Object value : values )
             {
 
-            if ( null == value )
+            if ( value == null )
                 {
 
-                if ( null == testValue )
+                if ( testValue == null )
                     {
                     occurrences++ ;
                     }
@@ -563,7 +583,7 @@ public class TestData
         {
 
         // proceed if we have a dataset to search
-        if ( ( null == values ) || ( 0 == values.length ) )
+        if ( ( values == null ) || ( values.length == 0 ) )
             {
             return false ;
             }
@@ -573,10 +593,13 @@ public class TestData
         for ( final Object value : values )
             {
 
-            if ( ( ( null == value ) && ( null == testValue ) ) || ( ( null != value ) && ( value.equals( testValue ) ) ) )
+            if ( ( ( value == null ) && ( testValue == null ) )
+                 || ( ( value != null ) && ( value.equals( testValue ) ) ) )
                 {
+
                 // matched non-null
                 return true ;
+
                 }
 
             }
@@ -596,7 +619,7 @@ public class TestData
     public static void main( final String[] args )
         {
 
-        final String formatSpecification = "%9s: %s%n" ;
+        final String formatSpecification = "%17s: %s%n" ;
 
         System.out.printf( formatSpecification,
                            "String",
@@ -626,13 +649,24 @@ public class TestData
                            "Float",
                            itemToString( 901_234.567_890F ) ) ;
         System.out.printf( formatSpecification,
-                           "Array",
+                           "Array of Integer",
                            itemToString( new Integer[]
                            { 1, 2, 3 } ) ) ;
         System.out.printf( formatSpecification,
-                           "Array",
+                           "Array of String",
                            itemToString( new String[]
                            { "1", "2", "3" } ) ) ;
+        System.out.printf( formatSpecification,
+                           "Array of Float",
+                           itemToString( new Float[]
+                           {} ) ) ;
+        System.out.printf( formatSpecification,
+                           "Array of Boolean",
+                           itemToString( new Boolean[]
+                           { null } ) ) ;
+        System.out.printf( formatSpecification,
+                           "null",
+                           itemToString( null ) ) ;
 
         System.out.printf( "%n" ) ;
 
@@ -664,13 +698,24 @@ public class TestData
                            "Float",
                            itemToStringWithType( 901_234.567_890F ) ) ;
         System.out.printf( formatSpecification,
-                           "Array",
+                           "Array of Integer",
                            itemToStringWithType( new Integer[]
                            { 1, 2, 3 } ) ) ;
         System.out.printf( formatSpecification,
-                           "Array",
+                           "Array of String",
                            itemToStringWithType( new String[]
                            { "1", "2", "3" } ) ) ;
+        System.out.printf( formatSpecification,
+                           "Array of Float",
+                           itemToStringWithType( new Float[]
+                           {} ) ) ;
+        System.out.printf( formatSpecification,
+                           "Array of Float",
+                           itemToStringWithType( new Boolean[]
+                           { null } ) ) ;
+        System.out.printf( formatSpecification,
+                           "null",
+                           itemToStringWithType( null ) ) ;
 
         }   // end main()
 
